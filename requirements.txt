@@ -1,0 +1,7 @@
+# Registry
+mlflow
+# API
+fastapi==0.108.0
+uvicorn
+colorama
+tensorflow
