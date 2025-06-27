@@ -1,5 +1,4 @@
 import streamlit as st
-from streamlit_navigation_bar import st_navbar
 from pages import inicio
 import os
 
@@ -19,43 +18,6 @@ pages = {
     "Home": inicio.show_home,
 }
 
-# --- Estilos del navbar ---
-styles = {
-    "nav": {
-        "background-color": "#111111",
-        "justify-content": "flex-start",
-        "align-items": "center",
-        "gap": "1rem",
-        "height": "60px",
-        "padding": "0 2rem",
-        "z-index": "10000"
-    },
-    "img": {
-        "padding-right": "12px",
-        "height": "38px",
-    },
-    "span": {
-        "color": "#ff4b9e",
-        "font-size": "16px",
-        "padding": "14px",
-        "font-weight": "bold",
-        "transition": "background-color 0.3s ease, color 0.3s ease",
-    },
-    "active": {
-        "background-color": "#ff4b9e",
-        "color": "white",
-        "font-weight": "bold",
-        "height": "60px",
-        "box-sizing": "border-box",
-    },
-}
-
-options = {
-    "show_menu": False,
-    "show_sidebar": False,
-}
-
-# --- Estilos globales ---
 st.markdown(f"""
 <style>
 [data-testid="stSidebar"], [data-testid="collapsedControl"] {{ display: none !important; }}
@@ -71,35 +33,38 @@ html, body, .stApp {{
     color: white !important;
 }}
 
-nav {{
-    position: fixed !important;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 10000 !important;
-}}
-
-nav span:hover {{
-    background-color: #ff4b9e33 !important;
-    color: white !important;
-    cursor: pointer;
-}}
-
 body, .stApp, .stMarkdown, p, span, div {{ color: white !important; }}
 [data-testid="stMarkdownContainer"] svg {{ color: #ff4b9e !important; }}
 
 section[data-testid="stFileUploader"] > div {{
     background-color: rgba(255, 255, 255, 0.05) !important;
-    border: 1px solid #ff4b9e88 !important;
+    border: 1px solid white !important;
     border-radius: 12px !important;
     padding: 1.25rem !important;
-    box-shadow: 0 0 6px #ff4b9e55;
+    box-shadow: 0 0 6px #ffffff44;
 }}
+
+/* Oculta el botón blanco nativo */
+section[data-testid="stFileUploader"] input[type="file"] {{
+    color: white !important;
+    background-color: transparent !important;
+    border: 1px solid white !important;
+    border-radius: 6px;
+    padding: 0.4rem 0.8rem;
+    font-weight: bold;
+    cursor: pointer;
+}}
+
+/* Ocultar completamente si prefieres zona full drop */
+section[data-testid="stFileUploader"] > div div div div:nth-child(2) {{
+    display: none !important;
+}}
+
 section[data-testid="stFileUploader"] div div {{
     background-color: transparent !important;
 }}
 section[data-testid="stFileUploader"] p {{
-    color: #f0f0f0 !important;
+    color: white !important;
 }}
 
 hr {{
@@ -122,16 +87,64 @@ div[data-testid="stHeader"] {{
 </style>
 """, unsafe_allow_html=True)
 
-# --- Navbar ---
-selected_page = st_navbar(
-    pages=list(pages.keys()),
-    styles=styles,
-    options=options,
-    logo_path=logo_path_svg,
-)
 
-# --- Mostrar contenido de la página seleccionada ---
-pages[selected_page]()
+st.markdown("""
+<style>
+button[kind="primary"] {
+    background-color: black !important;
+    color: white !important;
+    border-radius: 8px !important;
+    border: 1px solid white !important;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+button[kind="primary"]:hover {
+    background-color: #222 !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<style>
+/* Fondo oscuro para bloques de JSON */
+pre {
+    background-color: #111 !important;
+    color: white !important;
+    padding: 1rem !important;
+    border-radius: 10px !important;
+    font-size: 0.85rem !important;
+    overflow-x: auto !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
+
+
+
+
+# --- Solución previa para conflictos de z-index (navbar desactivado ahora) ---
+# st.markdown("""
+# <style>
+# nav[data-testid="stNavbar"] {
+#     z-index: 999 !important;
+#     position: relative !important;
+# }
+# section.main > div {
+#     position: relative;
+#     z-index: 1;
+# }
+# </style>
+# """, unsafe_allow_html=True)
+
+# --- Navbar desactivado ---
+# from streamlit_navigation_bar import st_navbar
+# styles = {...}
+# options = {...}
+# selected_page = st_navbar(...)
+# pages[selected_page]()
+
+# --- Mostrar página directamente ---
+pages["Home"]()
 
 # --- Footer ---
 st.markdown("---")
@@ -145,10 +158,6 @@ with col_footer:
     st.markdown("""
     <div style="font-size: 0.9rem; color: white; text-align: left; padding-top: 0.5rem;">
         <p style="margin: 4px 0;">Hitalyzer © 2025</p>
-        <p style="margin: 4px 0;">
-            Conecta con nosotros:
-            <a href="https://www.linkedin.com/company/fkeconomics" target="_blank" style="color: #ff4b9e;">LinkedIn FK</a>
-        </p>
         <p style="margin: 4px 0;">Desarrollado por Tremendo equipo</p>
     </div>
     """, unsafe_allow_html=True)
