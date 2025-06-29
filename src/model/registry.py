@@ -49,7 +49,7 @@ def load_model():
         models_dir = "models"
         # Load latest sklearn model
         for fname in sorted(os.listdir(models_dir), reverse=True):
-            if fname.endswith(".joblib"):
+            if fname.endswith(".pkl"):
                 print("✅ Model loaded from local disk, joblib format")
                 return joblib.load(os.path.join(models_dir, fname))
             elif fname.endswith(".h5"):
