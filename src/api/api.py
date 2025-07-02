@@ -14,15 +14,14 @@ def predict_from_input(model, input_dict):
     df = pd.DataFrame([input_dict])
     X_processed = preprocess_features(df)
     #y_pred = model.predict(X_processed)
-    #return model.predict(X_processed)[0]
-    for col in X_processed.columns:
-        print(col)
+    return model.predict(X_processed)[0]
     #return X_processed.info()
 
 # ✅ CLI entry point
 def main():
     model = load_model()
     sample = {
+        "genre": "hip hop",
         "duration_ms": 43784,
         "high_danceability_value": "not_danceable",
         "high_danceability_probability": 0.8201501369476318,
@@ -119,6 +118,7 @@ if __name__ != "__main__":
     #     result = predict_from_input(model, input_data)
     #     return {"SurviveRate": int(result)}
     def predict_popularity(
+        genre: str,
         duration_ms: int,
         high_danceability_value: str,
         high_danceability_probability: float,
@@ -184,6 +184,7 @@ if __name__ != "__main__":
         low_beats_count: int ):
         
         input_data = {
+             "genre" : genre,
              "duration_ms": duration_ms,
              "high_danceability_value": high_danceability_value,
              "high_danceability_probability": high_danceability_probability,

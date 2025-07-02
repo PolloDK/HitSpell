@@ -18,7 +18,10 @@ def scale_minmax(df, columns_to_scale):
     return df
 
 def encode_binary_column(df, column, positive_val='danceable', negative_val='not_danceable'):
-    df[column + '_encoded'] = df[column].map({positive_val: 1, negative_val: 0})
+    if column == "high_danceability_value":
+        df['danceability_encoded'] = df[column].map({positive_val: 1, negative_val: 0})
+    else:
+        df[column + '_encoded'] = df[column].map({positive_val: 1, negative_val: 0})
     return df.drop(columns=[column])
 
 def encode_binary_multiple(df, binary_map):
@@ -26,8 +29,26 @@ def encode_binary_multiple(df, binary_map):
         df[col] = df[col].map(mapping).fillna(0).astype(int)
     return df
 
-def one_hot_encode(df, cols):
-    return pd.get_dummies(df, columns=cols, drop_first=True)
+def one_hot_encode(df, cols_to_expected):
+    df = df.copy()
+
+    for col, expected_columns in cols_to_expected.items():
+        # One-hot encode the column
+        encoded = pd.get_dummies(df[[col]], columns=[col], drop_first=False)
+
+        # Add missing expected columns with 0s
+        for exp_col in expected_columns:
+            if exp_col not in encoded.columns:
+                encoded[exp_col] = 0
+
+        # Keep only expected columns in correct order
+        encoded = encoded[expected_columns]
+
+        # Drop original column and append encoded ones
+        df.drop(columns=[col], inplace=True)
+        df = pd.concat([df, encoded], axis=1)
+
+    return df
 
 def frequency_encode(df, cols):
     for col in cols:
@@ -60,12 +81,13 @@ def scale_standard(df):
     return df
 
 def preprocess_features(df: pd.DataFrame) -> pd.DataFrame:
+    #Dropping no relevant features
     df = drop_columns(df, ['audio_md5_encoded'])
-    #Fill null values
+    #Filling null values
     df_fill_missing_values = fill_missing_values(df)
-    #Scale with MinMaxScaler to numeric values
+    #Scaling with MinMaxScaler to numeric values
     df_scale_minmax = scale_minmax(df_fill_missing_values, ['duration_ms'])
-    #Encode binary values
+    #Encoding binary values
     df_encode = encode_binary_column(df_scale_minmax, 'high_danceability_value', 'danceable', 'not_danceable')
     binary_map = {
     'high_gender_value': {'female': 1, 'male': 0},
@@ -84,8 +106,22 @@ def preprocess_features(df: pd.DataFrame) -> pd.DataFrame:
     'low_chords_scale': {'major': 1, 'minor': 0}
     }
     df_encode_multiple = encode_binary_multiple(df_encode, binary_map)
-    
-    df_encode_multiple_hot_encode = one_hot_encode(df_encode_multiple, ['high_moods_mirex_value'])
+    #OneHotCoding some features
+    cols_to_expected = {
+    'high_moods_mirex_value': [
+        'high_moods_mirex_value_Cluster2',
+        'high_moods_mirex_value_Cluster3',
+        'high_moods_mirex_value_Cluster4',
+        'high_moods_mirex_value_Cluster5'
+    ],
+    'genre': [
+        'genre_electronic',
+        'genre_hip hop',
+        'genre_pop',
+        'genre_rock'
+        ]
+    }
+    df_encode_multiple_hot_encode = one_hot_encode(df_encode_multiple, cols_to_expected)
     
     #Frecuency encoding for medium cardinality columns
     medium_card_cols = [
