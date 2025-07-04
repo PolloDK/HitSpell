@@ -1,16 +1,18 @@
 import streamlit as st
+
 from pages import inicio
 import os
 
 # --- Rutas y configuración ---
 parent_dir = os.path.dirname(os.path.abspath(__file__))
-logo_path_svg = os.path.join(parent_dir, "assets", "logo.svg")
+logo_path_svg = os.path.join(parent_dir, "assets", "HITSPELL.svg")
+favicon_path_svg = os.path.join(parent_dir, "assets", "logo.svg")
 
 st.set_page_config(
     page_title="Hitalyzer",
     layout="wide",
     initial_sidebar_state="collapsed",
-    page_icon=logo_path_svg
+    page_icon=favicon_path_svg
 )
 
 # --- Páginas internas ---
@@ -26,11 +28,6 @@ st.markdown(f"""
 html, body, .stApp {{
     background: linear-gradient(to bottom, #000000, #ff4b9e);
     background-attachment: fixed;
-}}
-
-.block-container {{
-    margin-top: 2.75rem !important;
-    color: white !important;
 }}
 
 body, .stApp, .stMarkdown, p, span, div {{ color: white !important; }}
@@ -118,9 +115,56 @@ pre {
 </style>
 """, unsafe_allow_html=True)
 
+# --- CSS personalizado ---
+st.markdown("""
+<style>
+/* Aplica solo al primer selectbox visible */
+div[data-testid="column"] > div:nth-of-type(1) > div {
+    background-color: transparent !important;
+    border: 1px solid white !important;
+    border-radius: 8px !important;
+    padding: 5px !important;
+    height: 60px !important;
+    color: white !important;
+}
 
+/* Texto dentro del select */
+div[data-testid="column"] > div:nth-of-type(1) > div * {
+    color: white !important;
+}
 
+/* Forzamos a aplicar estilo al dropdown */
+div[role="listbox"] {
+    background-color: rgba(255,255,255,0.05) !important;
+    color: white !important;
+    border-radius: 8px !important;
+}
 
+div[role="option"] {
+    background-color: transparent !important;
+    color: white !important;
+}
+div[role="option"]:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+    <style>
+    div.stButton > button {
+        background-color: black !important;
+        color: white !important;
+        border-radius: 8px !important;
+        border: 1px solid white !important;
+        font-weight: bold;
+        padding: 0.5rem 1.5rem;
+    }
+    div.stButton > button:hover {
+        background-color: #222 !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
 # --- Solución previa para conflictos de z-index (navbar desactivado ahora) ---
 # st.markdown("""
@@ -152,12 +196,12 @@ col_logo, col_footer = st.columns([1, 4])
 
 with col_logo:
     if os.path.exists(logo_path_svg):
-        st.image(logo_path_svg, width=80)
+        st.image(logo_path_svg, width=200)
 
 with col_footer:
     st.markdown("""
     <div style="font-size: 0.9rem; color: white; text-align: left; padding-top: 0.5rem;">
-        <p style="margin: 4px 0;">Hitalyzer © 2025</p>
+        <p style="margin: 4px 0;">Hitspell © 2025</p>
         <p style="margin: 4px 0;">Desarrollado por Tremendo equipo</p>
     </div>
     """, unsafe_allow_html=True)
