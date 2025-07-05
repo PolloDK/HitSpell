@@ -24,6 +24,8 @@ __pycache__/
 # Environment files
 .env
 **/.env
+.envrc
+**/.envrc
 
 # OS/Editor files
 .DS_Store
@@ -52,7 +54,5 @@ dist/
 # Data and model directories
 data/
 datasets/
-models/
 **/data/
 **/datasets/
-**/models/
