@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler, StandardScaler, LabelEncoder
+import joblib
 
 def drop_columns(df, cols_to_drop):
     return df.drop(columns=cols_to_drop)
@@ -13,8 +14,8 @@ def fill_missing_values(df):
         return df
 
 def scale_minmax(df, columns_to_scale):
-    scaler = MinMaxScaler()
-    df[columns_to_scale] = scaler.fit_transform(df[columns_to_scale])
+    scaler = joblib.load('./models/minmax_scaler.pkl')
+    df[columns_to_scale] = scaler.transform(df[columns_to_scale])
     return df
 
 def encode_binary_column(df, column, positive_val='danceable', negative_val='not_danceable'):
@@ -65,19 +66,33 @@ def final_cleanup(df):
     num_cols = df.select_dtypes(include=['float64', 'int64']).columns
     for col in num_cols:
         if df[col].isnull().sum() > 0:
-            df[col] = df[col].fillna(df[col].median())
+            df[col] = df[col].fillna(0)
 
     cat_cols = df.select_dtypes(include='object').columns
     for col in cat_cols:
         if df[col].isnull().sum() > 0:
-            df[col] = df[col].fillna(df[col].mode()[0])
+            df[col] = df[col].fillna(0)
 
     return df
 
 def scale_standard(df):
+    exclude_cols = [
+        'duration_ms', 'high_danceability_value', 'high_gender_value',
+        'high_mood_acoustic_value', 'high_mood_aggressive_value', 'high_mood_electronic_value',
+        'high_mood_happy_value', 'high_mood_party_value', 'high_mood_relaxed_value',
+        'high_mood_sad_value', 'high_timbre_value', 'high_tonal_atonal_value',
+        'high_voice_instrumental_value', 'audio_downmix', 'low_key_scale', 'low_chords_scale',
+        'high_moods_mirex_value_Cluster2', 'high_moods_mirex_value_Cluster3',
+        'high_moods_mirex_value_Cluster4', 'high_moods_mirex_value_Cluster5',
+        'genre_electronic', 'genre_hip', 'genre_pop', 'genre_rock', 'audio_codec',
+        'low_key_key', 'low_chords_key'
+    ]
+
     numeric_cols = df.select_dtypes(include=['float64', 'int64']).columns
-    scaler = StandardScaler()
-    df[numeric_cols] = scaler.fit_transform(df[numeric_cols])
+    scale_cols = [col for col in numeric_cols if col not in exclude_cols]
+    scaler = joblib.load('./models/scaler.pkl')
+    df[scale_cols] = scaler.transform(df[scale_cols])
+
     return df
 
 def preprocess_features(df: pd.DataFrame) -> pd.DataFrame:
@@ -132,7 +147,7 @@ def preprocess_features(df: pd.DataFrame) -> pd.DataFrame:
     df_final_preview = final_cleanup(df_frequency_encode)
     #Final Scaling
     df = scale_standard(df_final_preview)
-    df = df.fillna(df.mean(numeric_only=True))
+
     return df
 
     

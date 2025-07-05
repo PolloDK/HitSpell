@@ -1,0 +1,58 @@
+# Byte-compiled / cache
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Git
+.git/
+.gitignore
+
+# Jupyter Notebooks and metadata
+*.ipynb
+**/*.ipynb
+*.ipynb:Zone.Identifier
+**/*.ipynb:Zone.Identifier
+
+# CSV and data files
+*.csv
+**/*.csv
+*.csv:Zone.Identifier
+**/*.csv:Zone.Identifier
+
+# Environment files
+.env
+**/.env
+
+# OS/Editor files
+.DS_Store
+Thumbs.db
+
+# Python environments
+venv/
+env/
+.venv/
+**/venv/
+**/env/
+**/.venv/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+**/build/
+**/dist/
+**/*.egg-info/
+
+# Logs
+*.log
+**/*.log
+
+# Data and model directories
+data/
+datasets/
+models/
+**/data/
+**/datasets/
+**/models/

@@ -45,16 +45,10 @@ def save_model(model=None) -> None:
 
 
 def load_model():
-    if MODEL_TARGET == "local":
+     if MODEL_TARGET == "local":
         models_dir = "models"
-        # Load latest sklearn model
-        for fname in sorted(os.listdir(models_dir), reverse=True):
-            if fname.endswith(".pkl"):
-                print("✅ Model loaded from local disk, joblib format")
-                return joblib.load(os.path.join(models_dir, fname))
-            elif fname.endswith(".h5"):
-                print("✅ Model loaded from local disk, Keras format")
-                return keras.models.load_model(os.path.join(models_dir, fname))
-        raise FileNotFoundError("No model found in models/")
-
-
+        model_file = os.path.join(models_dir, "model.pkl")
+        if not os.path.exists(model_file):
+            raise FileNotFoundError("Trained model file 'model.pkl' not found in models directory.")
+        print(f"✅ Loading model: model.pkl")
+        return joblib.load(model_file)
