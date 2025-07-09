@@ -84,7 +84,7 @@ def scale_standard(df):
         'high_voice_instrumental_value', 'audio_downmix', 'low_key_scale', 'low_chords_scale',
         'high_moods_mirex_value_Cluster2', 'high_moods_mirex_value_Cluster3',
         'high_moods_mirex_value_Cluster4', 'high_moods_mirex_value_Cluster5',
-        'genre_electronic', 'genre_hip', 'genre_pop', 'genre_rock', 'audio_codec',
+        'genre_electronic', 'genre_hip', 'genre_pop', 'genre_rock','genre_jazz','genre_metal','audio_codec',
         'low_key_key', 'low_chords_key'
     ]
 
@@ -133,7 +133,9 @@ def preprocess_features(df: pd.DataFrame) -> pd.DataFrame:
         'genre_electronic',
         'genre_hip hop',
         'genre_pop',
-        'genre_rock'
+        'genre_rock',
+        'genre_jazz',
+        'genre_metal'
         ]
     }
     df_encode_multiple_hot_encode = one_hot_encode(df_encode_multiple, cols_to_expected)
