@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 class Cancion(BaseModel):
     genre: str
-    duration_ms: float
+    duration_ms: int
     high_danceability_value: str
     high_danceability_probability: float
     high_gender_value: str
@@ -63,15 +63,11 @@ class Cancion(BaseModel):
     low_chords_scale: str
     low_chords_changes_rate: float
     low_chords_key: str
-    low_chords_number_rate: float
-    low_tuning_nontempered_energy_ratio: float
     low_tuning_frequency: float
-    low_tuning_diatonic_strength: float
-    low_tuning_equal_tempered_deviation: float
     low_danceability: float
     low_onset_rate: float
     low_bpm: float
-    low_beats_count: float
+    low_beats_count: int
 
 app = FastAPI(debug=True)
 app.state.datos = pd.read_csv('promedio_features.csv')
