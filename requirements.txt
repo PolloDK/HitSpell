@@ -1,0 +1,10 @@
+# API
+fastapi==0.108.0
+uvicorn
+colorama
+tensorflow
+seaborn
+xgboost
+lightgbm
+joblib
+scikit-learn>=1.0.0

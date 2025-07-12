@@ -25,3 +25,5 @@ frontend_react/gcp/*.json
 
 __pycache__/
 *.py[cod]
+TestResults.xml
+**/__pycache__/
