@@ -15,7 +15,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "../../components/Navbar";
 import PopularidadCard from "../../components/PopularidadCard";
 import RecomendacionReport from "../../components/RecomendacionReport";
-import { v4 as uuidv4 } from "uuid";
 
 const genres = ["rock", "pop", "electronic", "classical", "hip hop", "jazz", "house", "country", "blues", "punk", "r&b", "techno", "reggae", "funk", "latin", "disco"];
 
