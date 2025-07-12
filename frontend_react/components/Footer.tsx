@@ -16,7 +16,7 @@ const Footer = () => {
           <nav className="flex flex-col gap-2 text-sm">
             <Link href="/" className="hover:text-pink-400 transition-colors">Inicio</Link>
             <Link href="/about" className="hover:text-pink-400 transition-colors">Sobre</Link>
-            <Link href="/upload" className="hover:text-pink-400 transition-colors">Subir Canción</Link>
+            <Link href="/hitspell" className="hover:text-pink-400 transition-colors">Subir Canción</Link>
           </nav>
         </div>
 
