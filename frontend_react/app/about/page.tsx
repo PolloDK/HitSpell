@@ -1,14 +1,14 @@
 "use client";
 
 import Navbar from "@/components/Navbar";
-import { Heading3 } from "lucide-react";
+import Footer from "@/components/Footer";
 import Image from "next/image";
 
 export default function About() {
   return (
     <>
       <Navbar />
-      <main className="px-4 pt-24">
+      <main className="px-4 pt-24 pb-24">
         <div className="flex flex-col justify-center max-w-4xl mx-auto space-y-6 mt-10 text-white text-left">
 
           <Image
@@ -115,9 +115,46 @@ export default function About() {
             </div>
           </div>
 
+          <div className="mt-16 bg-zinc-900 border border-zinc-700 rounded-xl px-8 py-10 shadow-inner text-white">
+            <h2 className="text-2xl font-bold mb-6 text-pink-500">🛡️ Términos y Condiciones</h2>
+            <div className="prose prose-invert max-w-none text-white">
+              <h3 className="mt-6">Privacidad y uso de archivos</h3>
+              <p>
+                En Hitalyzer nos tomamos la privacidad de tus archivos muy en serio.
+                Todas las canciones que subas a la plataforma <strong>no se almacenan permanentemente</strong> en nuestros servidores ni se utilizan para ningún otro propósito que no sea el análisis inmediato.
+                Una vez finalizado el proceso, los archivos se eliminan automáticamente.
+              </p>
+
+              <h3 className="mt-6">Propiedad intelectual</h3>
+              <p>
+                Al subir una canción, conservas todos los derechos de autor sobre tu obra.
+                Hitalyzer <strong>no reclama ningún derecho de uso, reproducción ni distribución</strong> de los archivos subidos.
+              </p>
+
+              <h3 className="mt-6">Sobre la estimación de popularidad</h3>
+              <p>
+                El puntaje de popularidad que entrega Hitalyzer es una <strong>estimación generada a partir de características acústicas</strong> del audio,
+                como ritmo, timbre, energía, melodía y otros atributos derivados del contenido musical.
+              </p>
+              <p>
+                Este puntaje <strong>no representa una predicción definitiva</strong> del éxito comercial de la canción.
+                Existen muchos otros factores clave que influyen en el rendimiento de una canción —como marketing, presencia en redes sociales, apoyo de sellos discográficos, contexto cultural y conexión emocional con la audiencia— que <strong>no están considerados</strong> en este análisis.
+              </p>
+
+              <h3 className="mt-6">Uso responsable</h3>
+              <p>
+                Hitalyzer es una herramienta orientada a brindar orientación e insights creativos.
+                Te recomendamos complementar este análisis con otras fuentes y estrategias para tomar decisiones musicales o comerciales.
+              </p>
+            </div>
+          </div>
+
+
+
 
         </div>
       </main>
+      <Footer />
     </>
   );
 }

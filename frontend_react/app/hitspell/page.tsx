@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Label } from "@/components/ui/label";
+import Footer from "@/components/Footer";
 import {
   Select,
   SelectContent,
@@ -357,6 +358,7 @@ const handleAnalyze = async () => {
           </motion.div>
         )}
       </main>
+      <Footer />
     </>
   );
 }
