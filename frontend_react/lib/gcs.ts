@@ -1,11 +1,22 @@
 import { Storage } from "@google-cloud/storage";
-import path from "path";
 
-const credentialsPath = process.env.GOOGLE_APPLICATION_CREDENTIALS
-  ? path.resolve(process.cwd(), process.env.GOOGLE_APPLICATION_CREDENTIALS)
-  : "";
+let storage: Storage;
 
-export const storage = new Storage({
-  projectId: "hitalyzer-feature-extraction",
-  keyFilename: credentialsPath,
-});
+if (process.env.GCP_KEY_JSON) {
+  // ✅ Repara saltos de línea mal codificados en la clave privada
+  const raw = JSON.parse(process.env.GCP_KEY_JSON);
+  if (raw.private_key && typeof raw.private_key === "string") {
+    raw.private_key = raw.private_key.replace(/\\n/g, "\n");
+  }
+
+  storage = new Storage({
+    credentials: raw,
+    projectId: raw.project_id,
+  });
+} else {
+  storage = new Storage({
+    keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS || "",
+  });
+}
+
+export { storage };
