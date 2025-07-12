@@ -19,4 +19,9 @@ rad.json
 #License-file
 *.flf
 #Test results file
-TestResults.xml
+TestResults.xmlfrontend_react/gcp/*.json
+frontend_react/gcp/*.json
+frontend_react/gcp/*.json
+
+__pycache__/
+*.py[cod]
