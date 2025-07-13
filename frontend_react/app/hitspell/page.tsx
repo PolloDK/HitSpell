@@ -13,9 +13,11 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
-import Navbar from "../../components/Navbar";
-import PopularidadCard from "../../components/PopularidadCard";
-import RecomendacionReport from "../../components/RecomendacionReport";
+import Navbar from "@/components/Navbar";
+import PopularidadCard from "@/components/PopularidadCard";
+import RecomendacionReport from "@/components/RecomendacionReport";
+import AudioFeaturesDisplay from "@/components/AudioFeaturesDisplay";
+
 
 const genres = ["rock", "pop", "electronic", "classical", "hip hop", "jazz", "house", "country", "blues", "punk", "r&b", "techno", "reggae", "funk", "latin", "disco"];
 
@@ -205,7 +207,7 @@ const handleAnalyze = async () => {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen px-4 pt-32 pb-12 max-w-4xl mx-auto text-white">
+      <main className="min-h-screen px-4 pt-32 pb-12 max-w-6xl mx-auto text-white">
         <motion.h1
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -328,6 +330,20 @@ const handleAnalyze = async () => {
             >
               🔮 Analizar canción
             </Button>
+          </motion.div>
+        )}
+
+        {features && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="mt-16"
+          >
+            <h2 className="text-2xl font-bold text-white mb-4 text-center">
+              🎧 Características de audio extraídas
+            </h2>
+            <AudioFeaturesDisplay features={features} />
           </motion.div>
         )}
 
