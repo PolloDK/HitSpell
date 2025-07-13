@@ -6,13 +6,14 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import Navbar from "../components/Navbar";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <>
+    <div className="min-h-screen flex flex-col ">
       <Navbar />
-      <main className=" px-4 pt-24">
 
+      <main className="flex-grow px-4 pt-24 pb-100">
         <div className="flex flex-col items-center justify-center max-w-4xl mx-auto text-center space-y-6 mt-10">
           <Image
             src="/HITSPELL.svg"
@@ -41,7 +42,6 @@ export default function Home() {
             y personalizadas para afinar el hechizo: ajustes en tempo, mezcla, estructura o atmósfera emocional.
           </p>
 
-          {/* Botón animado */}
           <motion.div
             whileHover={{
               scale: 1.05,
@@ -57,10 +57,10 @@ export default function Home() {
               </Button>
             </Link>
           </motion.div>
-
-
         </div>
       </main>
-    </>
+
+      <Footer />
+    </div>
   );
 }

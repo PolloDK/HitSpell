@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Label } from "@/components/ui/label";
+import Footer from "@/components/Footer";
 import {
   Select,
   SelectContent,
@@ -12,10 +13,11 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
-import Navbar from "../../components/Navbar";
-import PopularidadCard from "../../components/PopularidadCard";
-import RecomendacionReport from "../../components/RecomendacionReport";
-import { v4 as uuidv4 } from "uuid";
+import Navbar from "@/components/Navbar";
+import PopularidadCard from "@/components/PopularidadCard";
+import RecomendacionReport from "@/components/RecomendacionReport";
+import AudioFeaturesDisplay from "@/components/AudioFeaturesDisplay";
+
 
 const genres = ["rock", "pop", "electronic", "classical", "hip hop", "jazz", "house", "country", "blues", "punk", "r&b", "techno", "reggae", "funk", "latin", "disco"];
 
@@ -68,7 +70,10 @@ export default function Hitspell() {
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    accept: { "audio/wav": [] },
+    accept: {
+      "audio/wav": [],
+      "audio/mpeg": [], // MIME type para .mp3
+    },
     multiple: false,
     maxSize: 200 * 1024 * 1024,
     onDrop: (acceptedFiles) => {
@@ -76,18 +81,20 @@ export default function Hitspell() {
       if (acceptedFiles.length > 0) {
         const f = acceptedFiles[0];
         const ext = f.name.split(".").pop()?.toLowerCase();
-        if (ext === "wav") {
+        if (ext === "wav" || ext === "mp3") {
           setFile(f);
           setFileName(f.name);
           simulateUpload();
         } else {
-          setAlert("❌ El archivo debe ser .wav");
+          setAlert("❌ El archivo debe ser .wav o .mp3");
         }
       }
     },
   });
 
 const handleAnalyze = async () => {
+  setAlert("");
+
   if (!genre || !file || !fileName) {
     setAlert("⚠️ Debes seleccionar un género y subir una canción válida (.wav)");
     return;
@@ -104,8 +111,8 @@ const handleAnalyze = async () => {
   const texts = [
     "Analizando tempo y ritmo...",
     "Extrayendo texturas musicales...",
-    "Detectando emociones...",
-    "Comparando con éxitos globales...",
+    "Detectando emociones y ánimos...",
+    "Analizando tonalidades, timbres y estructura tonal...",
     "Ajustando el hechizo musical...",
   ];
 
@@ -200,7 +207,7 @@ const handleAnalyze = async () => {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen px-4 pt-32 pb-12 max-w-xl mx-auto text-white">
+      <main className="min-h-screen px-4 pt-32 pb-12 max-w-6xl mx-auto text-white">
         <motion.h1
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -228,7 +235,7 @@ const handleAnalyze = async () => {
         >
           <Label className="mb-2 block text-white">Selecciona el género</Label>
           <Select onValueChange={setGenre}>
-            <SelectTrigger className="bg-zinc-900 border border-zinc-700 text-white">
+            <SelectTrigger className="w-60 bg-zinc-900 border border-zinc-700 text-white">
               <SelectValue placeholder="Elige un género..." />
             </SelectTrigger>
             <SelectContent className="bg-zinc-900 text-white">
@@ -247,6 +254,11 @@ const handleAnalyze = async () => {
           }`}
         >
           <input {...getInputProps()} />
+
+          <p className="text-sm text-white/70 mb-4">
+            Sube tu archivo <strong>.wav</strong> o <strong>.mp3</strong>
+          </p>
+
           <AnimatePresence>
             {!fileName && (
               <motion.p
@@ -272,6 +284,16 @@ const handleAnalyze = async () => {
               </motion.p>
             )}
           </AnimatePresence>
+
+          {!uploading && fileName && !analyzing && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="mt-4 text-green-400 text-center font-semibold"
+            >
+              ✅ Archivo cargado: {fileName}
+            </motion.p>
+          )}
         </motion.div>
 
         <AnimatePresence>
@@ -295,16 +317,6 @@ const handleAnalyze = async () => {
           )}
         </AnimatePresence>
 
-        {!uploading && fileName && !analyzing && (
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="mt-4 text-green-400 text-center font-semibold"
-          >
-            ✅ Archivo cargado: {fileName}
-          </motion.p>
-        )}
-
         {!analyzing && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -318,6 +330,20 @@ const handleAnalyze = async () => {
             >
               🔮 Analizar canción
             </Button>
+          </motion.div>
+        )}
+
+        {features && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="mt-16"
+          >
+            <h2 className="text-2xl font-bold text-white mb-4 text-center">
+              🎧 Características de audio extraídas
+            </h2>
+            <AudioFeaturesDisplay features={features} />
           </motion.div>
         )}
 
@@ -348,6 +374,7 @@ const handleAnalyze = async () => {
           </motion.div>
         )}
       </main>
+      <Footer />
     </>
   );
 }

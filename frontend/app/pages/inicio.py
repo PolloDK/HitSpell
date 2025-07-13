@@ -128,29 +128,43 @@ def show_home():
                     </div>""", unsafe_allow_html=True)
 
                     # Bloque 2: Reporte animado
-                    reporte_chatgpt = """Esta canción muestra un perfil acústico alineado con las tendencias actuales..."""
-                    bloque = st.empty()
-                    texto_mostrado = ""
-                    for letra in reporte_chatgpt:
-                        texto_mostrado += letra
-                        bloque.markdown(f"""<div style='
-                            background-color: #1e1e1e;
-                            color: white;
-                            padding: 25px;
-                            border-radius: 12px;
-                            font-size: 16px;
-                            line-height: 1.6;
-                            margin-top: 20px;
-                            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-                        '>
-                            <h4 style='color: #f72585;'>📝 Análisis de potencial generado por inteligencia artificial</h4>
-                            <p>{texto_mostrado}</p>
-                        </div>""", unsafe_allow_html=True)
-                        time.sleep(0.005)
+                    try:
+                        API_RECOMMENDER = "https://recomendador-api-173219828681.us-central1.run.app/recomendar"
+                        headers = {"Content-Type": "application/json"}
 
-                else:
-                    st.error(f"❌ Error en la API: {response.status_code}")
-                    st.code(response.text)
+                        with st.spinner("🔮 Obteniendo recomendaciones mágicas..."):
+
+                            recomendacion_response = requests.post(API_RECOMMENDER, json=response_data, headers=headers)
+
+                            if recomendacion_response.status_code == 200:
+                                reporte_chatgpt = recomendacion_response.json().get("recomendacion", "No se recibió análisis.")
+
+                                # Mostrar con animación
+                                bloque = st.empty()
+                                texto_mostrado = ""
+                                for letra in reporte_chatgpt:
+                                    texto_mostrado += letra
+                                    bloque.markdown(f"""<div style='
+                                        background-color: #1e1e1e;
+                                        color: white;
+                                        padding: 25px;
+                                        border-radius: 12px;
+                                        font-size: 16px;
+                                        line-height: 1.6;
+                                        margin-top: 20px;
+                                        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+                                    '>
+                                        <h4 style='color: #f72585;'>📝 Análisis de potencial generado por inteligencia artificial</h4>
+                                        <p>{texto_mostrado}</p>
+                                    </div>""", unsafe_allow_html=True)
+                                    time.sleep(0.005)
+
+                            else:
+                                st.warning(f"⚠️ Error al obtener recomendación: {recomendacion_response.status_code}")
+                                st.code(recomendacion_response.text)
+
+                    except Exception as e:
+                        st.error(f"❌ Error al llamar al recomendador: {e}")
 
             except Exception as e:
                 st.error(f"❌ Error durante el análisis: {e}")
