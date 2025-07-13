@@ -1,6 +1,6 @@
 import streamlit as st
 
-from pages import inicio
+from pages import inicio, about
 import os
 
 # --- Rutas y configuración ---
@@ -18,6 +18,7 @@ st.set_page_config(
 # --- Páginas internas ---
 pages = {
     "Home": inicio.show_home,
+    "About": about.show_about
 }
 
 st.markdown(f"""
