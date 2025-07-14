@@ -197,7 +197,7 @@ export default function AudioFeaturesDisplay({ features }: Props) {
 
   const lowAndMeta = Object.entries(features).filter(([k]) => !k.startsWith("high_"));
 
-  const visibleHigh = showAllHigh ? highLevel : highLevel.slice(0, 3);
+  const visibleHigh = showAllHigh ? highLevel : highLevel.slice(0, 2);
   const visibleLow = showAllLow ? lowAndMeta : lowAndMeta.slice(0, 6);
 
   return (
